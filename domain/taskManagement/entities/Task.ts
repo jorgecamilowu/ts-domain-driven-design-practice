@@ -7,7 +7,8 @@ export class Task {
     public description: string,
     public dueDate: Date,
     public priority: Priority,
-    public completed: boolean
+    public completed: boolean,
+    public readonly createdAt: Date
   ) {}
 
   markAsCompleted(): void {
@@ -20,7 +21,14 @@ export class Task {
 
   updateDetails(
     details: Partial<
-      Omit<Task, "id" | "markAsCompleted" | "markAsPending" | "updateDetails">
+      Omit<
+        Task,
+        | "id"
+        | "createdAt"
+        | "markAsCompleted"
+        | "markAsPending"
+        | "updateDetails"
+      >
     >
   ) {
     Object.assign(this, details);
