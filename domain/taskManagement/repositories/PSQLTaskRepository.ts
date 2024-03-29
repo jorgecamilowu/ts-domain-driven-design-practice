@@ -1,20 +1,59 @@
 import { TaskRepository } from "./TaskRepository";
 import { Task } from "../entities/Task";
+import { TaskResult, TaskUpdate } from "../entities/persistance/TaskTable";
+import { Database } from "../../../infrastructure/database";
+import { Kysely } from "kysely";
 
 export class PSQLTaskRepository implements TaskRepository {
-  findById(id: string): Promise<Task | null> {
-    throw new Error("Method not implemented.");
+  constructor(private db: Kysely<Database>) {}
+
+  private mapToEntity({
+    id,
+    title,
+    description,
+    dueDate,
+    priority,
+    completed,
+    createdAt,
+  }: TaskResult): Task {
+    return new Task(
+      id,
+      title,
+      description,
+      dueDate,
+      priority,
+      completed,
+      createdAt
+    );
   }
-  findAll(): Promise<Task[]> {
-    throw new Error("Method not implemented.");
+
+  async findById(id: string): Promise<Task | null> {
+    const task = await this.db
+      .selectFrom("task")
+      .where("id", "=", id)
+      .selectAll()
+      .executeTakeFirst();
+
+    if (!task) {
+      return null;
+    }
+
+    return this.mapToEntity(task);
   }
-  save(task: Task): Promise<void> {
-    throw new Error("Method not implemented.");
+
+  async findAll(): Promise<Task[]> {
+    return (await this.db.selectFrom("task").selectAll().execute()).map(
+      (result) => this.mapToEntity(result)
+    );
   }
-  update(task: Task): Promise<void> {
-    throw new Error("Method not implemented.");
+  async updateOne(id: string, updateWith: TaskUpdate): Promise<void> {
+    await this.db
+      .updateTable("task")
+      .set(updateWith)
+      .where("id", "=", id)
+      .execute();
   }
-  delete(id: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  async delete(id: string): Promise<void> {
+    await this.db.deleteFrom("task").where("id", "=", id).execute();
   }
 }

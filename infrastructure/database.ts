@@ -2,7 +2,7 @@ import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
 import { TaskTable } from "../domain/taskManagement/entities/persistance/TaskTable";
 
-interface Database {
+export interface Database {
   task: TaskTable;
 }
 
