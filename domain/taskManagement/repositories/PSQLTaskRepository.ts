@@ -1,12 +1,16 @@
 import { TaskRepository } from "./TaskRepository";
 import { Task } from "../entities/Task";
-import { TaskResult, TaskUpdate } from "../entities/persistance/TaskTable";
+import {
+  NewTask,
+  TaskResult,
+  TaskUpdate,
+} from "../entities/persistance/TaskTable";
 import { Database } from "../../../infrastructure/database";
-import { Kysely } from "kysely";
+import { Generated, Kysely } from "kysely";
+import { Priority } from "../valueObjects/Priority";
 
 export class PSQLTaskRepository implements TaskRepository {
   constructor(private db: Kysely<Database>) {}
-
   private mapToEntity({
     id,
     title,
@@ -25,6 +29,16 @@ export class PSQLTaskRepository implements TaskRepository {
       completed,
       createdAt
     );
+  }
+
+  async create(task: NewTask): Promise<string> {
+    const { id } = await this.db
+      .insertInto("task")
+      .values(task)
+      .returningAll()
+      .executeTakeFirstOrThrow();
+
+    return id;
   }
 
   async findById(id: string): Promise<Task | null> {
