@@ -7,7 +7,7 @@ import {
 } from "kysely";
 import { Priority } from "../../valueObjects/Priority";
 
-interface TaskTable {
+export interface TaskTable {
   id: Generated<string>;
   title: string;
   description: string;
