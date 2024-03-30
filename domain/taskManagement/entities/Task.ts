@@ -2,7 +2,7 @@ import { Priority } from "../valueObjects/Priority";
 
 export class Task {
   constructor(
-    private readonly id: string,
+    public readonly id: string,
     public title: string,
     public description: string,
     public dueDate: Date,

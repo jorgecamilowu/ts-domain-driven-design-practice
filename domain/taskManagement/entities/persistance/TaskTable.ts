@@ -8,7 +8,7 @@ import {
 import { Priority } from "../../valueObjects/Priority";
 
 export interface TaskTable {
-  id: ColumnType<string, Generated<string>, never>;
+  id: Generated<string>;
   title: string;
   description: string;
   dueDate: Date;
