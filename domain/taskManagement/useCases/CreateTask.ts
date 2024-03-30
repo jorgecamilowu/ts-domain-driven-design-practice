@@ -1,12 +1,10 @@
 import { NewTask } from "../entities/persistance/TaskTable";
 import { TaskRepository } from "../repositories/TaskRepository";
 
-export class CreateTaskUseCase {
+export class CreateTask {
   constructor(private taskRepository: TaskRepository) {}
 
   async execute(task: NewTask): Promise<string> {
-    const id = await this.taskRepository.create(task);
-
-    return id;
+    return this.taskRepository.create(task);
   }
 }

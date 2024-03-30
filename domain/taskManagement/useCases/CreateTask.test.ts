@@ -1,11 +1,11 @@
 import { describe, it, beforeEach, expect } from "bun:test";
-import { CreateTaskUseCase } from "./CreateTaskUseCase";
+import { CreateTask } from "./CreateTask";
 import { Task } from "../entities/Task";
 import { Priority } from "../valueObjects/Priority";
 import { TaskRepository } from "../repositories/TaskRepository";
 import { InMemoryTaskRepository } from "../repositories/InMemoryTaskRepository";
 describe("Create Task Use Case", () => {
-  let useCase: CreateTaskUseCase;
+  let useCase: CreateTask;
   let taskRepository: TaskRepository;
 
   const firstTask = new Task(
@@ -32,7 +32,7 @@ describe("Create Task Use Case", () => {
 
   beforeEach(() => {
     taskRepository = new InMemoryTaskRepository(structuredClone(taskFixtures));
-    useCase = new CreateTaskUseCase(taskRepository);
+    useCase = new CreateTask(taskRepository);
   });
 
   it("creates a new task", async () => {
