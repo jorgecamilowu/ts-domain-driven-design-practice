@@ -4,8 +4,9 @@ import { Priority } from "../valueObjects/Priority";
 import { TaskRepository } from "../repositories/TaskRepository";
 import { InMemoryTaskRepository } from "../repositories/InMemoryTaskRepository";
 import { GetTaskById } from "./GetTaskById";
-describe("Get Task By Id Use Case", () => {
-  let useCase: GetTaskById;
+import { GetAllTasks } from "./GetAllTasks";
+describe("Get All Tasks Use Case", () => {
+  let useCase: GetAllTasks;
   let taskRepository: TaskRepository;
 
   const firstTask = new Task(
@@ -18,25 +19,27 @@ describe("Get Task By Id Use Case", () => {
     new Date()
   );
 
-  const taskFixtures = [firstTask];
+  const secondTask = new Task(
+    "second-task",
+    "SecondTask",
+    "The second task",
+    new Date(),
+    Priority.HIGH,
+    false,
+    new Date()
+  );
+
+  const taskFixtures = [firstTask, secondTask];
 
   beforeEach(() => {
     taskRepository = new InMemoryTaskRepository(structuredClone(taskFixtures));
-    useCase = new GetTaskById(taskRepository);
+    useCase = new GetAllTasks(taskRepository);
   });
 
   it("gets a new task", async () => {
-    const task = await useCase.execute(firstTask.id);
-
-    expect(task).not.toBe(null);
-    expect(task?.title).toBe("FirstTask");
-    expect(task?.description).toBe("The first task");
-    expect(task?.priority).toBe(Priority.MEDIUM);
-  });
-
-  it("returns null when task is not found", async () => {
-    const task = await useCase.execute("non-existing-task-id");
-
-    expect(task).toBe(null);
+    const tasks = await useCase.execute();
+    expect(tasks).toHaveLength(2);
+    expect(tasks[0].id).toBe(firstTask.id);
+    expect(tasks[1].id).toBe(secondTask.id);
   });
 });
