@@ -1,6 +1,6 @@
 import { IdempotencyStore } from "./IdempotencyStore";
 
-class IdempotencyStoreProxy implements IdempotencyStore {
+export class InMemoryIdempotencyStore implements IdempotencyStore {
   constructor(private store: Record<string, any>) {}
 
   async get<T>(id: string): Promise<T | undefined> {
@@ -11,5 +11,3 @@ class IdempotencyStoreProxy implements IdempotencyStore {
     this.store[id] = value;
   }
 }
-
-export { IdempotencyStoreProxy };
