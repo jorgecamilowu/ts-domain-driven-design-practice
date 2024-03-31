@@ -37,7 +37,7 @@ describe("Create Task Use Case", () => {
 
   it("creates a new task", async () => {
     const id = await useCase.execute({
-      title: "third-task",
+      title: "ThirdTask",
       description: "The third task",
       completed: false,
       dueDate: new Date(),
@@ -47,7 +47,7 @@ describe("Create Task Use Case", () => {
     const task = await taskRepository.findById(id);
 
     expect(task).not.toBe(null);
-    expect(task?.title).toBe("third-task");
+    expect(task?.title).toBe("ThirdTask");
     expect(task?.description).toBe("The third task");
     expect(task?.priority).toBe(Priority.LOW);
   });
