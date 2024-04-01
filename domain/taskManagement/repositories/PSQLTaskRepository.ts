@@ -7,7 +7,6 @@ import {
 } from "../entities/persistance/TaskTable";
 import { Database } from "../../../infrastructure/database";
 import { Generated, Kysely } from "kysely";
-import { Priority } from "../valueObjects/Priority";
 
 export class PSQLTaskRepository implements TaskRepository {
   constructor(private db: Kysely<Database>) {}
