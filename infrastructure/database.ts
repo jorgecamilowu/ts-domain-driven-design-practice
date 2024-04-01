@@ -1,6 +1,7 @@
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
 import { TaskTable } from "../domain/taskManagement/entities/persistance/TaskTable";
+import config from "config";
 
 export interface Database {
   task: TaskTable;
@@ -8,10 +9,11 @@ export interface Database {
 
 const dialect = new PostgresDialect({
   pool: new Pool({
-    database: "test",
-    host: "127.0.0.1",
-    user: "postgres",
-    port: 5434,
+    database: config.get("database.name"),
+    host: config.get("database.host"),
+    user: config.get("database.user"),
+    password: config.get("database.password"),
+    port: parseInt(config.get("database.port")),
     max: 10,
   }),
 });

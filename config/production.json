@@ -1,0 +1,9 @@
+{
+  "database": {
+    "name": "not_set",
+    "host": "not_set",
+    "user": "not_set",
+    "password": "not-set",
+    "port": 5434
+  }
+}
