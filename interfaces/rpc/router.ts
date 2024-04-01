@@ -13,7 +13,7 @@ import { z } from "zod";
 const taskRepository = new PSQLTaskRepository(db);
 const inMemoryIdempotencyStore = new InMemoryIdempotencyStore({});
 
-const appRouter = router({
+export const appRouter = router({
   createTask: publicProcedure
     .input(
       z.object({
