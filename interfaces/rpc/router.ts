@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { PSQLTaskRepository } from "../../domain/taskManagement/repositories/PSQLTaskRepository";
 import { CreateTask } from "../../domain/taskManagement/useCases/CreateTask";
 import { DeleteTask } from "../../domain/taskManagement/useCases/DeleteTask";
@@ -19,9 +20,10 @@ export const appRouter = router({
       z.object({
         requestId: z.string(),
         task: z.object({
-          title: z.string(),
+          id: z.string().default(nanoid()),
+          title: z.string().default(""),
           description: z.string().default(""),
-          dueDate: z.date().default(new Date()),
+          dueDate: z.string().default(new Date().toDateString()),
           priority: z.nativeEnum(Priority).default(Priority.LOW),
           completed: z.boolean().default(false),
         }),

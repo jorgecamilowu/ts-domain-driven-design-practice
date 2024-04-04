@@ -1,7 +1,25 @@
-import { createHTTPServer } from "@trpc/server/adapters/standalone";
+import * as trpcExpress from "@trpc/server/adapters/express";
+import express from "express";
 import { appRouter } from "../interfaces/rpc/router";
-import config from "config";
+import { zodResolveTypes } from "../interfaces/rpc/trpcPlaygroundFix";
+import { expressHandler } from "trpc-playground/handlers/express";
 
-export const server = createHTTPServer({
-  router: appRouter,
-});
+const trpcApiEndpoint = "/api/trpc";
+const playgroundEndpoint = "/api/trpc-playground";
+
+export const server = express();
+
+server.use(
+  trpcApiEndpoint,
+  trpcExpress.createExpressMiddleware({ router: appRouter })
+);
+
+server.use(
+  playgroundEndpoint,
+  await expressHandler({
+    trpcApiEndpoint,
+    playgroundEndpoint,
+    router: appRouter,
+    resolveTypes: zodResolveTypes,
+  })
+);

@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { IdempotencyStore } from "../../../infrastructure/idempotency/IdempotencyStore";
 import { NewTask } from "../entities/persistance/TaskTable";
 import { TaskRepository } from "../repositories/TaskRepository";
@@ -15,7 +16,11 @@ export class CreateTask {
       return result;
     }
 
-    const id = await this.taskRepository.create(task);
+    const id = await this.taskRepository.create({
+      ...task,
+      id: nanoid(),
+      createdAt: new Date().toDateString(),
+    });
 
     this.idempotencyStore.set(requestId, id);
 
