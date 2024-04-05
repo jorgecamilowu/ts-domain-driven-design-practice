@@ -10,7 +10,7 @@ describe("Update Task Use Case", () => {
   let taskRepository: TaskRepository;
 
   const firstTask = new Task(
-    "first-task",
+    1,
     "FirstTask",
     "The first task",
     new Date(),
@@ -40,7 +40,7 @@ describe("Update Task Use Case", () => {
   });
 
   it("returns error when task id does not exist", async () => {
-    const result = await useCase.execute("non-existing id", {
+    const result = await useCase.execute(332, {
       priority: Priority.HIGH,
     });
 

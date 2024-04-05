@@ -6,7 +6,7 @@ export const getTaskByIdRoute = (useCase: GetTaskById) =>
   publicProcedure
     .input(
       z.object({
-        id: z.string().min(1),
+        id: z.number().min(1),
       })
     )
     .query(async ({ input }) => {

@@ -7,7 +7,7 @@ export const updateTaskRoute = (useCase: UpdateTask) =>
   publicProcedure
     .input(
       z.object({
-        id: z.string(),
+        id: z.number(),
         updateWith: z.object({
           title: z.string().optional(),
           description: z.string().optional(),

@@ -6,7 +6,7 @@ export const deleteTaskRoute = (useCase: DeleteTask) =>
   publicProcedure
     .input(
       z.object({
-        id: z.string().min(1),
+        id: z.number().min(1),
       })
     )
     .mutation(async ({ input }) => {

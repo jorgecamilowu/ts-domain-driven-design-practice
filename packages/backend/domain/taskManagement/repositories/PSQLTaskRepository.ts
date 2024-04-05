@@ -26,7 +26,7 @@ export class PSQLTaskRepository implements TaskRepository {
     );
   }
 
-  async create(task: NewTask): Promise<string> {
+  async create(task: NewTask): Promise<number> {
     const { id } = await this.db
       .insertInto("task")
       .values(task)
@@ -36,7 +36,7 @@ export class PSQLTaskRepository implements TaskRepository {
     return id;
   }
 
-  async findById(id: string): Promise<Task | null> {
+  async findById(id: number): Promise<Task | null> {
     const task = await this.db
       .selectFrom("task")
       .where("id", "=", id)
@@ -55,14 +55,14 @@ export class PSQLTaskRepository implements TaskRepository {
       (result) => this.mapToEntity(result)
     );
   }
-  async updateOne(id: string, updateWith: TaskUpdate): Promise<void> {
+  async updateOne(id: number, updateWith: TaskUpdate): Promise<void> {
     await this.db
       .updateTable("task")
       .set(updateWith)
       .where("id", "=", id)
       .execute();
   }
-  async delete(id: string): Promise<void> {
+  async delete(id: number): Promise<void> {
     await this.db.deleteFrom("task").where("id", "=", id).execute();
   }
 }

@@ -9,7 +9,6 @@ export const createTaskRoute = (useCase: CreateTask) =>
     .input(
       z.object({
         task: z.object({
-          id: z.string().default(nanoid()),
           title: z.string().default(""),
           description: z.string().default(""),
           dueDate: z.string().default(new Date().toDateString()),

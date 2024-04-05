@@ -1,6 +1,6 @@
 import {
   ColumnType,
-  Generated,
+  GeneratedAlways,
   Insertable,
   Selectable,
   Updateable,
@@ -8,7 +8,7 @@ import {
 import { Priority } from "../valueObjects/Priority";
 
 export interface TaskTable {
-  id: Generated<string>;
+  id: GeneratedAlways<number>;
   title: string;
   description: string;
   dueDate: ColumnType<Date, string | undefined, Date>;

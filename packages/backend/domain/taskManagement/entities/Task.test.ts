@@ -8,7 +8,7 @@ describe("Task entity", () => {
 
   beforeEach(() => {
     task = new Task(
-      nanoid(),
+      123,
       "title",
       "description",
       new Date(),

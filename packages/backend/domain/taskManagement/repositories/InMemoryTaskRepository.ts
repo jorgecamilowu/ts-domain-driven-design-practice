@@ -13,12 +13,12 @@ export class InMemoryTaskRepository implements TaskRepository {
     dueDate,
     priority,
     completed,
-  }: NewTask): Promise<string> {
+  }: NewTask): Promise<number> {
     const newTask = new Task(
-      nanoid(),
+      123,
       title,
       description,
-      dueDate,
+      (dueDate && new Date(dueDate)) || new Date(),
       priority,
       completed,
       new Date()
@@ -28,7 +28,7 @@ export class InMemoryTaskRepository implements TaskRepository {
 
     return newTask.id;
   }
-  async findById(id: string): Promise<Task | null> {
+  async findById(id: number): Promise<Task | null> {
     const task = this.tasks.find((task) => task.id === id);
 
     if (!task) {
@@ -41,7 +41,7 @@ export class InMemoryTaskRepository implements TaskRepository {
   async findAll(): Promise<Task[]> {
     return this.tasks;
   }
-  async updateOne(id: string, updateWith: TaskUpdate): Promise<void> {
+  async updateOne(id: number, updateWith: TaskUpdate): Promise<void> {
     const workingTask = await this.findById(id);
 
     if (!workingTask) {
@@ -53,7 +53,7 @@ export class InMemoryTaskRepository implements TaskRepository {
       .filter((task) => task.id !== workingTask.id)
       .concat(workingTask);
   }
-  async delete(id: string): Promise<void> {
+  async delete(id: number): Promise<void> {
     this.tasks = this.tasks.filter((task) => task.id !== id);
   }
 }

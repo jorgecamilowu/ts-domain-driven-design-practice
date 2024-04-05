@@ -4,7 +4,7 @@ import { TaskRepository } from "../repositories/TaskRepository";
 export class UpdateTask {
   constructor(private taskRepository: TaskRepository) {}
 
-  async execute(taskId: string, updateWith: TaskUpdate): Promise<void | Error> {
+  async execute(taskId: number, updateWith: TaskUpdate): Promise<void | Error> {
     const existingTask = await this.taskRepository.findById(taskId);
 
     if (!existingTask) {

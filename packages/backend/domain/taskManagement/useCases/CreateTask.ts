@@ -9,10 +9,10 @@ export class CreateTask {
     private idempotencyStore: IdempotencyStore
   ) {}
 
-  async execute(task: NewTask, idempotencyKey?: string): Promise<string> {
+  async execute(task: NewTask, idempotencyKey?: string): Promise<number> {
     const result =
       (idempotencyKey !== undefined &&
-        (await this.idempotencyStore.get<string>(idempotencyKey))) ||
+        (await this.idempotencyStore.get<number>(idempotencyKey))) ||
       undefined;
 
     if (result !== undefined) {
@@ -21,7 +21,6 @@ export class CreateTask {
 
     const id = await this.taskRepository.create({
       ...task,
-      id: nanoid(),
       createdAt: new Date().toDateString(),
     });
 

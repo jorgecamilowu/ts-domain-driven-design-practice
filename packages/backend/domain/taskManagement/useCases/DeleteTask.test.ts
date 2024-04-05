@@ -9,7 +9,7 @@ describe("Delete Task Use Case", () => {
   let taskRepository: TaskRepository;
 
   const firstTask = new Task(
-    "first-task",
+    1,
     "FirstTask",
     "The first task",
     new Date(),
@@ -19,7 +19,7 @@ describe("Delete Task Use Case", () => {
   );
 
   const secondTask = new Task(
-    "second-task",
+    2,
     "SecondTask",
     "The second task",
     new Date(),

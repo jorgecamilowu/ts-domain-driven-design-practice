@@ -9,7 +9,7 @@ describe("Get Task By Id Use Case", () => {
   let taskRepository: TaskRepository;
 
   const firstTask = new Task(
-    "first-task",
+    1,
     "FirstTask",
     "The first task",
     new Date(),
@@ -35,7 +35,7 @@ describe("Get Task By Id Use Case", () => {
   });
 
   it("returns null when task is not found", async () => {
-    const task = await useCase.execute("non-existing-task-id");
+    const task = await useCase.execute(1111112322);
 
     expect(task).toBe(null);
   });
