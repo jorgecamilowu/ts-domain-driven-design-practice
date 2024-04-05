@@ -42,16 +42,13 @@ describe("Create Task Use Case", () => {
   });
 
   it("creates a new task", async () => {
-    const id = await useCase.execute(
-      {
-        title: "ThirdTask",
-        description: "The third task",
-        completed: false,
-        dueDate: new Date(),
-        priority: Priority.LOW,
-      },
-      nanoid()
-    );
+    const id = await useCase.execute({
+      title: "ThirdTask",
+      description: "The third task",
+      completed: false,
+      dueDate: new Date().toDateString(),
+      priority: Priority.LOW,
+    });
 
     const task = await taskRepository.findById(id);
 
@@ -68,15 +65,15 @@ describe("Create Task Use Case", () => {
       title: "ThirdTask",
       description: "The third task",
       completed: false,
-      dueDate: new Date(),
+      dueDate: new Date().toDateString(),
       priority: Priority.LOW,
     };
 
-    const requestId = nanoid();
+    const idempotencyKey = nanoid();
 
-    await useCase.execute(newTask, requestId);
-    await useCase.execute(newTask, requestId);
-    await useCase.execute(newTask, requestId);
+    await useCase.execute(newTask, idempotencyKey);
+    await useCase.execute(newTask, idempotencyKey);
+    await useCase.execute(newTask, idempotencyKey);
 
     expect(taskRepository.create).toHaveBeenCalledTimes(1);
   });

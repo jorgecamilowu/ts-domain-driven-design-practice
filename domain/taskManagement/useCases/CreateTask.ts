@@ -9,8 +9,11 @@ export class CreateTask {
     private idempotencyStore: IdempotencyStore
   ) {}
 
-  async execute(task: NewTask, requestId: string): Promise<string> {
-    const result = await this.idempotencyStore.get<string>(requestId);
+  async execute(task: NewTask, idempotencyKey?: string): Promise<string> {
+    const result =
+      (idempotencyKey !== undefined &&
+        (await this.idempotencyStore.get<string>(idempotencyKey))) ||
+      undefined;
 
     if (result !== undefined) {
       return result;
@@ -22,7 +25,9 @@ export class CreateTask {
       createdAt: new Date().toDateString(),
     });
 
-    this.idempotencyStore.set(requestId, id);
+    if (idempotencyKey) {
+      this.idempotencyStore.set(idempotencyKey, id);
+    }
 
     return id;
   }

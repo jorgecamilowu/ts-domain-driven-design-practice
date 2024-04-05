@@ -18,7 +18,7 @@ export const appRouter = router({
   createTask: publicProcedure
     .input(
       z.object({
-        requestId: z.string(),
+        idempotencyKey: z.string().optional(),
         task: z.object({
           id: z.string().default(nanoid()),
           title: z.string().default(""),
@@ -32,7 +32,7 @@ export const appRouter = router({
     .mutation(async ({ input }) => {
       const useCase = new CreateTask(taskRepository, inMemoryIdempotencyStore);
 
-      return useCase.execute(input.task, input.requestId);
+      return useCase.execute(input.task, input.idempotencyKey);
     }),
   taskList: publicProcedure.query(async () => {
     const useCase = new GetAllTasks(taskRepository);
