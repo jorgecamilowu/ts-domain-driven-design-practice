@@ -12,6 +12,7 @@ import { publicProcedure, router } from "./trpc";
 import { z } from "zod";
 import { createTaskRoute } from "./CreateTaskRoute";
 import { getAllTasksRoute } from "./GetAllTasksRoute";
+import { getTaskByIdRoute } from "./getTaskByIdRoute";
 
 const taskRepository = new PSQLTaskRepository(db);
 const inMemoryIdempotencyStore = new InMemoryIdempotencyStore({});
@@ -21,17 +22,7 @@ export const appRouter = router({
     new CreateTask(taskRepository, inMemoryIdempotencyStore)
   ),
   taskList: getAllTasksRoute(new GetAllTasks(taskRepository)),
-  taskById: publicProcedure
-    .input(
-      z.object({
-        id: z.string().min(1),
-      })
-    )
-    .query(async ({ input }) => {
-      const useCase = new GetTaskById(taskRepository);
-
-      return useCase.execute(input.id);
-    }),
+  taskById: getTaskByIdRoute(new GetTaskById(taskRepository)),
   updateTask: publicProcedure
     .input(
       z.object({
