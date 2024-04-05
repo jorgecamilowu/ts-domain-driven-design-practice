@@ -1,5 +1,5 @@
 import config from "config";
-import { server } from "./packages/backEnd/infrastructure/server";
+import { server } from "./infrastructure/server";
 
 const port = parseInt(config.get("port")) || 8080;
 
