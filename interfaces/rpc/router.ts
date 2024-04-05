@@ -10,35 +10,17 @@ import { db } from "../../infrastructure/database";
 import { InMemoryIdempotencyStore } from "../../infrastructure/idempotency/InMemoryIdempotencyStore";
 import { publicProcedure, router } from "./trpc";
 import { z } from "zod";
+import { createTaskRoute } from "./CreateTaskRoute";
+import { getAllTasksRoute } from "./GetAllTasksRoute";
 
 const taskRepository = new PSQLTaskRepository(db);
 const inMemoryIdempotencyStore = new InMemoryIdempotencyStore({});
 
 export const appRouter = router({
-  createTask: publicProcedure
-    .input(
-      z.object({
-        idempotencyKey: z.string().optional(),
-        task: z.object({
-          id: z.string().default(nanoid()),
-          title: z.string().default(""),
-          description: z.string().default(""),
-          dueDate: z.string().default(new Date().toDateString()),
-          priority: z.nativeEnum(Priority).default(Priority.LOW),
-          completed: z.boolean().default(false),
-        }),
-      })
-    )
-    .mutation(async ({ input }) => {
-      const useCase = new CreateTask(taskRepository, inMemoryIdempotencyStore);
-
-      return useCase.execute(input.task, input.idempotencyKey);
-    }),
-  taskList: publicProcedure.query(async () => {
-    const useCase = new GetAllTasks(taskRepository);
-
-    return useCase.execute();
-  }),
+  createTask: createTaskRoute(
+    new CreateTask(taskRepository, inMemoryIdempotencyStore)
+  ),
+  taskList: getAllTasksRoute(new GetAllTasks(taskRepository)),
   taskById: publicProcedure
     .input(
       z.object({
