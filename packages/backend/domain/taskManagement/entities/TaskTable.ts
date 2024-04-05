@@ -11,9 +11,9 @@ export interface TaskTable {
   id: GeneratedAlways<number>;
   title: string;
   description: string;
-  dueDate: ColumnType<Date, string | undefined, Date>;
   priority: Priority;
   completed: boolean;
+  dueDate: ColumnType<Date, string | undefined, Date>;
   createdAt: ColumnType<Date, string | undefined, never>;
 }
 

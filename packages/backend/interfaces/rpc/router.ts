@@ -4,7 +4,7 @@ import { DeleteTask } from "../../domain/taskManagement/useCases/DeleteTask";
 import { GetAllTasks } from "../../domain/taskManagement/useCases/GetAllTasks";
 import { GetTaskById } from "../../domain/taskManagement/useCases/GetTaskById";
 import { UpdateTask } from "../../domain/taskManagement/useCases/UpdateTask";
-import { db } from "../../infrastructure/database";
+import { db } from "../../infrastructure/database/database";
 import { InMemoryIdempotencyStore } from "../../infrastructure/idempotency/InMemoryIdempotencyStore";
 import { router } from "./trpc";
 import { createTaskRoute } from "./routes/createTaskRoute";

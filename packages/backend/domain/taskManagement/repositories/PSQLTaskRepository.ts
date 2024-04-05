@@ -1,7 +1,7 @@
 import { TaskRepository } from "./TaskRepository";
 import { Task } from "../entities/Task";
 import { NewTask, TaskResult, TaskUpdate } from "../entities/TaskTable";
-import { Database } from "../../../infrastructure/database";
+import { Database } from "../../../infrastructure/database/database";
 import { Generated, Kysely } from "kysely";
 
 export class PSQLTaskRepository implements TaskRepository {

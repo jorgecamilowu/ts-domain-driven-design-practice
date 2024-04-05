@@ -1,16 +1,9 @@
-import {
-  GeneratedAlways,
-  Insertable,
-  Nullable,
-  Selectable,
-  Updateable,
-} from "kysely";
+import { GeneratedAlways, Insertable, Selectable, Updateable } from "kysely";
 
 export interface PermissionTable {
   id: GeneratedAlways<number>;
   type: string;
   resource: string;
-  roleId: Nullable<number>;
 }
 
 export type AccountResult = Selectable<PermissionTable>;
