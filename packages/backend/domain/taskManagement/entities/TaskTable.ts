@@ -15,6 +15,7 @@ export interface TaskTable {
   completed: boolean;
   dueDate: ColumnType<Date, string | undefined, Date>;
   createdAt: ColumnType<Date, string | undefined, never>;
+  accountId: number | null;
 }
 
 export type TaskResult = Selectable<TaskTable>;

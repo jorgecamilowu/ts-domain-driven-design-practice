@@ -13,6 +13,7 @@ export class InMemoryTaskRepository implements TaskRepository {
     dueDate,
     priority,
     completed,
+    accountId,
   }: NewTask): Promise<number> {
     const newTask = new Task(
       123,
@@ -21,7 +22,8 @@ export class InMemoryTaskRepository implements TaskRepository {
       (dueDate && new Date(dueDate)) || new Date(),
       priority,
       completed,
-      new Date()
+      new Date(),
+      accountId || null
     );
 
     this.tasks = [...this.tasks, newTask];

@@ -8,7 +8,8 @@ export class Task {
     public dueDate: Date,
     public priority: Priority,
     public completed: boolean,
-    public readonly createdAt: Date
+    public readonly createdAt: Date,
+    public readonly accountId: number | null
   ) {}
 
   markAsCompleted(): void {

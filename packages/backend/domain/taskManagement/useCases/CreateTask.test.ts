@@ -20,7 +20,8 @@ describe("Create Task Use Case", () => {
     new Date(),
     Priority.MEDIUM,
     false,
-    new Date()
+    new Date(),
+    null
   );
 
   const secondTask = new Task(
@@ -30,7 +31,8 @@ describe("Create Task Use Case", () => {
     new Date(),
     Priority.HIGH,
     false,
-    new Date()
+    new Date(),
+    null
   );
 
   const taskFixtures = [firstTask, secondTask];

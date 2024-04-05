@@ -14,6 +14,7 @@ export class PSQLTaskRepository implements TaskRepository {
     priority,
     completed,
     createdAt,
+    accountId,
   }: TaskResult): Task {
     return new Task(
       id,
@@ -22,7 +23,8 @@ export class PSQLTaskRepository implements TaskRepository {
       dueDate,
       priority,
       completed,
-      createdAt
+      createdAt,
+      accountId
     );
   }
 

@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "start": "bun index.ts",
+    "typecheck": "tsc",
     "run:migrations": "bun ./infrastructure/database/runMigrations.ts"
   },
   "dependencies": {

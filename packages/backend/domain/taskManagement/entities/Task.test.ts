@@ -14,7 +14,8 @@ describe("Task entity", () => {
       new Date(),
       Priority.MEDIUM,
       false,
-      new Date()
+      new Date(),
+      null
     );
   });
 

@@ -16,7 +16,8 @@ describe("Update Task Use Case", () => {
     new Date(),
     Priority.MEDIUM,
     false,
-    new Date()
+    new Date(),
+    null
   );
 
   const taskFixtures = [firstTask];
