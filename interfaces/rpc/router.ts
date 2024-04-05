@@ -10,8 +10,8 @@ import { db } from "../../infrastructure/database";
 import { InMemoryIdempotencyStore } from "../../infrastructure/idempotency/InMemoryIdempotencyStore";
 import { publicProcedure, router } from "./trpc";
 import { z } from "zod";
-import { createTaskRoute } from "./CreateTaskRoute";
-import { getAllTasksRoute } from "./GetAllTasksRoute";
+import { createTaskRoute } from "./createTaskRoute";
+import { getAllTasksRoute } from "./getAllTasksRoute";
 import { getTaskByIdRoute } from "./getTaskByIdRoute";
 
 const taskRepository = new PSQLTaskRepository(db);
