@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { UpdateTask } from "../../domain/taskManagement/useCases/UpdateTask";
-import { Priority } from "../../domain/taskManagement/valueObjects/Priority";
-import { publicProcedure } from "./trpc";
+import { UpdateTask } from "../../../domain/taskManagement/useCases/UpdateTask";
+import { Priority } from "../../../domain/taskManagement/valueObjects/Priority";
+import { publicProcedure } from "../trpc";
 
 export const updateTaskRoute = (useCase: UpdateTask) =>
   publicProcedure

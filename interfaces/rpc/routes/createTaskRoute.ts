@@ -1,8 +1,8 @@
 import { nanoid } from "nanoid";
 import { z } from "zod";
-import { CreateTask } from "../../domain/taskManagement/useCases/CreateTask";
-import { Priority } from "../../domain/taskManagement/valueObjects/Priority";
-import { publicProcedure } from "./trpc";
+import { CreateTask } from "../../../domain/taskManagement/useCases/CreateTask";
+import { Priority } from "../../../domain/taskManagement/valueObjects/Priority";
+import { publicProcedure } from "../trpc";
 
 export const createTaskRoute = (useCase: CreateTask) =>
   publicProcedure

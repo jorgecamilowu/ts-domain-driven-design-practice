@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { GetTaskById } from "../../domain/taskManagement/useCases/GetTaskById";
-import { publicProcedure } from "./trpc";
+import { GetTaskById } from "../../../domain/taskManagement/useCases/GetTaskById";
+import { publicProcedure } from "../trpc";
 
 export const getTaskByIdRoute = (useCase: GetTaskById) =>
   publicProcedure
