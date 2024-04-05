@@ -1,10 +1,18 @@
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
-import { TaskTable } from "../domain/taskManagement/entities/persistance/TaskTable";
+import { TaskTable } from "../domain/taskManagement/entities/TaskTable";
 import config from "config";
+import { AccountTable } from "../domain/auth/entities/AccountTable";
+import { RoleTable } from "../domain/auth/entities/RoleTable";
+import { PermissionTable } from "../domain/auth/entities/PermissionTable";
+import { RolePermissionTable } from "../domain/auth/entities/RolePermissionTable";
 
 export interface Database {
+  account: AccountTable;
   task: TaskTable;
+  role: RoleTable;
+  permission: PermissionTable;
+  rolePermission: RolePermissionTable;
 }
 
 const dialect = new PostgresDialect({

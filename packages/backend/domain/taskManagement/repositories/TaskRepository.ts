@@ -1,5 +1,5 @@
 import { Task } from "../entities/Task";
-import { NewTask, TaskUpdate } from "../entities/persistance/TaskTable";
+import { NewTask, TaskUpdate } from "../entities/TaskTable";
 
 export interface TaskRepository {
   create(task: NewTask): Promise<string>;

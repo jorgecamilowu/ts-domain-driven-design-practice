@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import { IdempotencyStore } from "../../../infrastructure/idempotency/IdempotencyStore";
-import { NewTask } from "../entities/persistance/TaskTable";
+import { NewTask } from "../entities/TaskTable";
 import { TaskRepository } from "../repositories/TaskRepository";
 
 export class CreateTask {

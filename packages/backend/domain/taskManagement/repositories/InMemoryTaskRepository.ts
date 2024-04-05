@@ -2,7 +2,7 @@ import { Generated } from "kysely";
 import { Priority } from "../valueObjects/Priority";
 import { TaskRepository } from "./TaskRepository";
 import { Task } from "../entities/Task";
-import { NewTask, TaskUpdate } from "../entities/persistance/TaskTable";
+import { NewTask, TaskUpdate } from "../entities/TaskTable";
 import { nanoid } from "nanoid";
 
 export class InMemoryTaskRepository implements TaskRepository {

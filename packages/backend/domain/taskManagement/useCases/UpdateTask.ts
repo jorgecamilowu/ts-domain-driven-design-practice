@@ -1,4 +1,4 @@
-import { TaskUpdate } from "../entities/persistance/TaskTable";
+import { TaskUpdate } from "../entities/TaskTable";
 import { TaskRepository } from "../repositories/TaskRepository";
 
 export class UpdateTask {

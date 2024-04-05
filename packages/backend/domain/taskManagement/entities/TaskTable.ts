@@ -5,7 +5,7 @@ import {
   Selectable,
   Updateable,
 } from "kysely";
-import { Priority } from "../../valueObjects/Priority";
+import { Priority } from "../valueObjects/Priority";
 
 export interface TaskTable {
   id: Generated<string>;
