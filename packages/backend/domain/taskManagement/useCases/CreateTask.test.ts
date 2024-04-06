@@ -2,11 +2,11 @@ import { describe, it, beforeEach, expect, spyOn } from "bun:test";
 import { CreateTask } from "./CreateTask";
 import { Task } from "../entities/Task";
 import { Priority } from "../valueObjects/Priority";
-import { TaskRepository } from "../repositories/TaskRepository";
+import type { TaskRepository } from "../repositories/TaskRepository";
 import { InMemoryTaskRepository } from "../repositories/InMemoryTaskRepository";
 import { InMemoryIdempotencyStore } from "../../../infrastructure/idempotency/InMemoryIdempotencyStore";
 import { nanoid } from "nanoid";
-import { IdempotencyStore } from "../../../infrastructure/idempotency/IdempotencyStore";
+import type { IdempotencyStore } from "../../../infrastructure/idempotency/IdempotencyStore";
 
 describe("Create Task Use Case", () => {
   let useCase: CreateTask;

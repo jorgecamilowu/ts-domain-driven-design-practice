@@ -1,4 +1,4 @@
-import { Priority } from "../valueObjects/Priority";
+import type { Priority } from "../valueObjects/Priority";
 
 export class Task {
   constructor(

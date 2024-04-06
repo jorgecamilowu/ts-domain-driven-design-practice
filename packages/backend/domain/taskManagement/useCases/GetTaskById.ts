@@ -1,5 +1,5 @@
-import { Task } from "../entities/Task";
-import { TaskRepository } from "../repositories/TaskRepository";
+import type { Task } from "../entities/Task";
+import type { TaskRepository } from "../repositories/TaskRepository";
 
 export class GetTaskById {
   constructor(private taskRepository: TaskRepository) {}

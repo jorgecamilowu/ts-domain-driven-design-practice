@@ -1,10 +1,13 @@
-import { TaskUpdate } from "../entities/TaskTable";
-import { TaskRepository } from "../repositories/TaskRepository";
+import type { TaskUpdate } from "../entities/TaskTable";
+import type { TaskRepository } from "../repositories/TaskRepository";
 
 export class UpdateTask {
   constructor(private taskRepository: TaskRepository) {}
 
-  async execute(taskId: number, updateWith: TaskUpdate): Promise<void | Error> {
+  async execute(
+    taskId: number,
+    updateWith: TaskUpdate
+  ): Promise<Error | undefined> {
     const existingTask = await this.taskRepository.findById(taskId);
 
     if (!existingTask) {

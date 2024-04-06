@@ -1,5 +1,6 @@
-import { Kysely } from "kysely";
+import type { Kysely } from "kysely";
 
+// biome-ignore lint:
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable("role")
@@ -28,6 +29,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .execute();
 }
 
+// biome-ignore lint:
 export async function down(db: Kysely<any>): Promise<void> {
   await db.schema.dropTable("role").execute();
   await db.schema.dropTable("permission").execute();

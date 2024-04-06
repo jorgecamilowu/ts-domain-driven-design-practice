@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import { z } from "zod";
-import { CreateTask } from "../../../domain/taskManagement/useCases/CreateTask";
+import type { CreateTask } from "../../../domain/taskManagement/useCases/CreateTask";
 import { Priority } from "../../../domain/taskManagement/valueObjects/Priority";
 import { publicProcedure } from "../trpc";
 

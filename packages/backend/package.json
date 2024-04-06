@@ -5,6 +5,7 @@
   "scripts": {
     "start": "bun index.ts",
     "typecheck": "tsc",
+    "lint:fix": "biome lint --apply .",
     "run:migrations": "bun ./infrastructure/database/runMigrations.ts"
   },
   "dependencies": {
@@ -21,6 +22,7 @@
     "zod-to-ts": "^1.2.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.6.4",
     "@trpc/client": "next",
     "@trpc/server": "next",
     "@types/config": "^3.3.4",

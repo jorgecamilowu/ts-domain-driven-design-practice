@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, expect } from "bun:test";
 import { Task } from "../entities/Task";
 import { Priority } from "../valueObjects/Priority";
-import { TaskRepository } from "../repositories/TaskRepository";
+import type { TaskRepository } from "../repositories/TaskRepository";
 import { InMemoryTaskRepository } from "../repositories/InMemoryTaskRepository";
 import { GetTaskById } from "./GetTaskById";
 describe("Get Task By Id Use Case", () => {

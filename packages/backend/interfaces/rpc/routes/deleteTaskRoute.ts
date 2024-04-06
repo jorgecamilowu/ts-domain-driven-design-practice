@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { DeleteTask } from "../../../domain/taskManagement/useCases/DeleteTask";
+import type { DeleteTask } from "../../../domain/taskManagement/useCases/DeleteTask";
 import { publicProcedure } from "../trpc";
 
 export const deleteTaskRoute = (useCase: DeleteTask) =>

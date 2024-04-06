@@ -1,8 +1,8 @@
-import { TaskRepository } from "./TaskRepository";
+import type { TaskRepository } from "./TaskRepository";
 import { Task } from "../entities/Task";
-import { NewTask, TaskResult, TaskUpdate } from "../entities/TaskTable";
-import { Database } from "../../../infrastructure/database/database";
-import { Generated, Kysely } from "kysely";
+import type { NewTask, TaskResult, TaskUpdate } from "../entities/TaskTable";
+import type { Database } from "../../../infrastructure/database/database";
+import { Generated, type Kysely } from "kysely";
 
 export class PSQLTaskRepository implements TaskRepository {
   constructor(private db: Kysely<Database>) {}

@@ -1,5 +1,6 @@
-import { Kysely, sql } from "kysely";
+import { type Kysely, sql } from "kysely";
 
+// biome-ignore lint:
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable("task")
@@ -17,6 +18,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .execute();
 }
 
+// biome-ignore lint:
 export async function down(db: Kysely<any>): Promise<void> {
   await db.schema.dropTable("task").execute();
 }

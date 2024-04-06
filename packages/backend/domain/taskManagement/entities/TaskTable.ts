@@ -1,11 +1,11 @@
-import {
+import type {
   ColumnType,
   GeneratedAlways,
   Insertable,
   Selectable,
   Updateable,
 } from "kysely";
-import { Priority } from "../valueObjects/Priority";
+import type { Priority } from "../valueObjects/Priority";
 
 export interface TaskTable {
   id: GeneratedAlways<number>;

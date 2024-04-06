@@ -42,7 +42,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import type { ResolvedRouterSchema } from "@trpc-playground/types";
+import type * as types from "@trpc-playground/types";
 import type { AnyProcedure, AnyRouter } from "@trpc/server";
 import type {
   AnyZodObject,
@@ -110,7 +110,7 @@ const buildTrpcTsType = (router: AnyRouter, procedureTypes: ProcedureTypes) => {
 
 export const zodResolveTypes = async (
   router: AnyRouter
-): Promise<ResolvedRouterSchema> => {
+): Promise<types.ResolvedRouterSchema> => {
   const { schemas, types } = getProcedureSchemas(router._def.procedures);
 
   return {
@@ -131,7 +131,7 @@ export const getInputFromInputParsers = (inputs: ZodAny[]) => {
 };
 
 export const getProcedureSchemas = (procedures: Procedures) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const procedureSchemas: any = { queries: {}, mutations: {} };
   const procedureTypes: ProcedureTypes = { queries: {}, mutations: {} };
 
@@ -187,7 +187,7 @@ export const getProcedureSchemas = (procedures: Procedures) => {
   return { schemas: procedureSchemas, types: procedureTypes };
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint:
 const getDefaultForDef = (def: any): string => {
   if (!def) return "";
 
@@ -247,38 +247,48 @@ const defaultString = () => {
 };
 
 const defaultDate = () => {
+  // biome-ignore lint:
   return `new Date()`;
 };
 
 const defaultNumber = () => {
+  // biome-ignore lint:
   return `0`;
 };
 
 const defaultBigInt = () => {
+  // biome-ignore lint:
   return `BigInt(0)`;
 };
 
 const defaultBoolean = () => {
+  // biome-ignore lint:
   return `false`;
 };
 
 const defaultUndefined = () => {
+  // biome-ignore lint:
   return `undefined`;
 };
 
 const defaultNull = () => {
+  // biome-ignore lint:
   return `null`;
 };
 
 const defaultObject = (def: ZodObjectDef) => {
+  // biome-ignore lint:
   let ret = `{ `;
 
   const entries = Object.entries(def.shape());
   entries.forEach(([name, propDef], idx) => {
     ret += `${name}: ${getDefaultForDef(propDef._def)}`;
+    // biome-ignore lint:
     if (idx !== entries.length - 1) ret += `, `;
+    // biome-ignore lint:
     else ret += ` `;
   });
+  // biome-ignore lint:
   ret += `}`;
 
   return ret;
@@ -289,10 +299,12 @@ const defaultArray = (def: ZodArrayDef) => {
 };
 
 const defaultTuple = (def: ZodTupleDef) => {
+  // biome-ignore lint:
   let ret = `[`;
   for (let i = 0; i < def.items.length; i++) {
     const item = def.items[i];
     ret += `${getDefaultForDef(item?._def)}`;
+    // biome-ignore lint:
     if (i !== def.items.length - 1) ret += ``;
   }
 
@@ -314,6 +326,7 @@ const defaultNullable = (def: ZodNullableDef) => {
 };
 
 const defaultOptional = (def: ZodOptionalDef) => {
+  // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
   return getDefaultForDef(def.innerType._def) ?? `undefined`;
 };
 
