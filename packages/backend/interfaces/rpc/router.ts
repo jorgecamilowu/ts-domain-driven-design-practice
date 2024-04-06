@@ -20,8 +20,8 @@ export const appRouter = router({
   createTask: createTaskRoute(
     new CreateTask(taskRepository, inMemoryIdempotencyStore)
   ),
-  taskList: getAllTasksRoute(new GetAllTasks(taskRepository)),
-  taskById: getTaskByIdRoute(new GetTaskById(taskRepository)),
+  getAllTasks: getAllTasksRoute(new GetAllTasks(taskRepository)),
+  getTaskById: getTaskByIdRoute(new GetTaskById(taskRepository)),
   updateTask: updateTaskRoute(new UpdateTask(taskRepository)),
   deleteTask: deleteTaskRoute(new DeleteTask(taskRepository)),
 });
