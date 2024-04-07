@@ -1,9 +1,15 @@
-import type { GeneratedAlways, Insertable, Selectable, Updateable } from "kysely";
+import type {
+  GeneratedAlways,
+  Insertable,
+  Selectable,
+  Updateable,
+} from "kysely";
+import type { ResourceString } from "../valueObjects/Resource";
 
 export interface PermissionTable {
   id: GeneratedAlways<number>;
   type: string;
-  resource: string;
+  resource: ResourceString;
 }
 
 export type AccountResult = Selectable<PermissionTable>;
