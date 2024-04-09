@@ -1,6 +1,7 @@
 import { TRPCError, initTRPC } from "@trpc/server";
 import type * as trpcExpress from "@trpc/server/adapters/express";
 import { Role } from "../../domain/auth/entities/Role";
+import { Account } from "../../domain/auth/entities/Account";
 
 export async function createContext({
   req,
@@ -8,16 +9,14 @@ export async function createContext({
   if (req.headers.authorization) {
     const jwt = req.headers.authorization.split(" ")[1];
 
-    const role = await Role.fromJWT(jwt);
+    const accountInfo = await Account.parseInfoFromJWT(jwt);
 
     return {
-      user: {
-        role,
-      },
+      account: accountInfo,
     };
   }
 
-  return { user: null };
+  return { account: null };
 }
 
 type Context = Awaited<ReturnType<typeof createContext>>;
@@ -27,13 +26,13 @@ const trpc = initTRPC.context<Context>().create();
 export const router = trpc.router;
 export const publicProcedure = trpc.procedure;
 export const protectedProcedure = trpc.procedure.use(async ({ ctx, next }) => {
-  if (!ctx.user) {
+  if (!ctx.account) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
   return next({
     ctx: {
-      user: ctx.user,
+      account: ctx.account,
     },
   });
 });
