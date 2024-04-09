@@ -4,6 +4,7 @@ import { appRouter } from "../interfaces/rpc/router";
 import { zodResolveTypes } from "../interfaces/rpc/trpcPlaygroundFix";
 import { expressHandler } from "trpc-playground/handlers/express";
 import cors from "cors";
+import { createContext } from "../interfaces/rpc/trpc";
 
 const trpcApiEndpoint = "/api/trpc";
 const playgroundEndpoint = "/api/trpc-playground";
@@ -14,7 +15,7 @@ server.use(cors());
 
 server.use(
   trpcApiEndpoint,
-  trpcExpress.createExpressMiddleware({ router: appRouter })
+  trpcExpress.createExpressMiddleware({ router: appRouter, createContext })
 );
 
 server.use(
