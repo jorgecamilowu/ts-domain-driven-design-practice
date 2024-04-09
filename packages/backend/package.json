@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "start": "bun index.ts",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
     "typecheck": "tsc",
     "lint:fix": "biome lint --apply .",
     "run:migrations": "bun ./infrastructure/database/runMigrations.ts"
