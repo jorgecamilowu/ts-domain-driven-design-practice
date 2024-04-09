@@ -1,10 +1,15 @@
-import type { GeneratedAlways, Insertable, Selectable, Updateable } from "kysely";
+import type {
+  GeneratedAlways,
+  Insertable,
+  Selectable,
+  Updateable,
+} from "kysely";
 
 export interface RoleTable {
   id: GeneratedAlways<number>;
   name: string;
 }
 
-export type AccountResult = Selectable<RoleTable>;
-export type NewAccount = Insertable<RoleTable>;
-export type AccountUpdate = Updateable<RoleTable>;
+export type RoleResult = Selectable<RoleTable>;
+export type NewRole = Insertable<RoleTable>;
+export type RoleUpdate = Updateable<RoleTable>;

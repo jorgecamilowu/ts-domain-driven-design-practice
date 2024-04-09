@@ -1,5 +1,8 @@
 {
   "port": 8080,
+  "auth": {
+    "jwk": "not_set"
+  },
   "database": {
     "name": "not_set",
     "host": "not_set",
