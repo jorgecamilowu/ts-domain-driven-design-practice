@@ -18,10 +18,16 @@ export const getTaskByIdRoute = ({
       })
     )
     .query(async ({ ctx, input }) => {
+      const task = await GetTaskById.execute(input.id);
+
+      if (task === null || task.accountId === null) {
+        return null;
+      }
+
       const accessLevel = await GetResourceAccessLevel.execute(
         ctx.account.role,
         {
-          accountId: ctx.account.id,
+          accountId: task.accountId,
           name: "task",
         }
       );
@@ -29,5 +35,6 @@ export const getTaskByIdRoute = ({
       if (accessLevel !== "read" && accessLevel !== "readAndWrite") {
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }
-      return GetTaskById.execute(input.id);
+
+      return task;
     });
