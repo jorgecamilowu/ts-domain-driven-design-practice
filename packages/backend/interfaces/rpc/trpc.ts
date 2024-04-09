@@ -1,6 +1,5 @@
 import { TRPCError, initTRPC } from "@trpc/server";
 import type * as trpcExpress from "@trpc/server/adapters/express";
-import { Role } from "../../domain/auth/entities/Role";
 import { Account } from "../../domain/auth/entities/Account";
 
 export async function createContext({
@@ -16,7 +15,7 @@ export async function createContext({
     };
   }
 
-  return { account: null };
+  return { account: null, errorMessage: "Missing authorization header" };
 }
 
 type Context = Awaited<ReturnType<typeof createContext>>;
@@ -27,7 +26,10 @@ export const router = trpc.router;
 export const publicProcedure = trpc.procedure;
 export const protectedProcedure = trpc.procedure.use(async ({ ctx, next }) => {
   if (!ctx.account) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: ctx.errorMessage,
+    });
   }
 
   return next({

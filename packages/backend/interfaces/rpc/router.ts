@@ -12,6 +12,7 @@ import { getAllTasksRoute } from "./routes/getAllTasksRoute";
 import { getTaskByIdRoute } from "./routes/getTaskByIdRoute";
 import { updateTaskRoute } from "./routes/updateTaskRoute";
 import { deleteTaskRoute } from "./routes/deleteTaskRoute";
+import { GetResourceAccessLevel } from "../../domain/auth/useCases/GetResourceAccessLevel";
 
 const taskRepository = new PSQLTaskRepository(db);
 const inMemoryIdempotencyStore = new InMemoryIdempotencyStore({});
@@ -21,7 +22,10 @@ export const appRouter = router({
     new CreateTask(taskRepository, inMemoryIdempotencyStore)
   ),
   getAllTasks: getAllTasksRoute(new GetAllTasks(taskRepository)),
-  getTaskById: getTaskByIdRoute(new GetTaskById(taskRepository)),
+  getTaskById: getTaskByIdRoute({
+    GetResourceAccessLevel: new GetResourceAccessLevel(),
+    GetTaskById: new GetTaskById(taskRepository),
+  }),
   updateTask: updateTaskRoute(new UpdateTask(taskRepository)),
   deleteTask: deleteTaskRoute(new DeleteTask(taskRepository)),
 });
