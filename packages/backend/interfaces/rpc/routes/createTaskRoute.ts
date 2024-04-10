@@ -1,11 +1,18 @@
-import { nanoid } from "nanoid";
 import { z } from "zod";
 import type { CreateTask } from "../../../domain/taskManagement/useCases/CreateTask";
 import { Priority } from "../../../domain/taskManagement/valueObjects/Priority";
-import { publicProcedure } from "../trpc";
+import { protectedProcedure } from "../trpc";
+import type { GetResourceAccessLevel } from "../../../domain/auth/useCases/GetResourceAccessLevel";
+import { TRPCError } from "@trpc/server";
 
-export const createTaskRoute = (useCase: CreateTask) =>
-  publicProcedure
+export const createTaskRoute = ({
+  GetResourceAccessLevel,
+  CreateTask,
+}: {
+  GetResourceAccessLevel: GetResourceAccessLevel;
+  CreateTask: CreateTask;
+}) =>
+  protectedProcedure
     .input(
       z.object({
         task: z.object({
@@ -18,6 +25,23 @@ export const createTaskRoute = (useCase: CreateTask) =>
         idempotencyKey: z.string().optional(),
       })
     )
-    .mutation(async ({ input }) => {
-      return useCase.execute(input.task, input.idempotencyKey);
+    .mutation(async ({ input, ctx }) => {
+      const accessLevel = await GetResourceAccessLevel.execute(
+        ctx.account.role,
+        {
+          accountId: ctx.account.id,
+          name: "task",
+        }
+      );
+
+      if (accessLevel !== "readAndWrite" && accessLevel !== "write") {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+        });
+      }
+
+      return CreateTask.execute(
+        { ...input.task, accountId: ctx.account.id },
+        input.idempotencyKey
+      );
     });
