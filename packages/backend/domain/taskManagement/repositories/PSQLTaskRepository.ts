@@ -2,7 +2,7 @@ import type { TaskRepository } from "./TaskRepository";
 import { Task } from "../entities/Task";
 import type { NewTask, TaskResult, TaskUpdate } from "../entities/TaskTable";
 import type { Database } from "../../../infrastructure/database/database";
-import { Generated, type Kysely } from "kysely";
+import type { Kysely } from "kysely";
 
 export class PSQLTaskRepository implements TaskRepository {
   constructor(private db: Kysely<Database>) {}
@@ -52,10 +52,14 @@ export class PSQLTaskRepository implements TaskRepository {
     return this.mapToEntity(task);
   }
 
-  async findAll(): Promise<Task[]> {
-    return (await this.db.selectFrom("task").selectAll().execute()).map(
-      (result) => this.mapToEntity(result)
-    );
+  async findAll(accountId: number): Promise<Task[]> {
+    return (
+      await this.db
+        .selectFrom("task")
+        .where("accountId", "=", accountId)
+        .selectAll()
+        .execute()
+    ).map((result) => this.mapToEntity(result));
   }
   async updateOne(id: number, updateWith: TaskUpdate): Promise<void> {
     await this.db

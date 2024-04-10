@@ -4,7 +4,7 @@ import type { TaskRepository } from "../repositories/TaskRepository";
 export class GetAllTasks {
   constructor(private taskRepository: TaskRepository) {}
 
-  async execute(): Promise<Task[]> {
-    return this.taskRepository.findAll();
+  async execute(accountId: number): Promise<Task[]> {
+    return this.taskRepository.findAll(accountId);
   }
 }

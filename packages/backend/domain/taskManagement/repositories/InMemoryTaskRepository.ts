@@ -1,9 +1,6 @@
-import { Generated } from "kysely";
-import { Priority } from "../valueObjects/Priority";
 import type { TaskRepository } from "./TaskRepository";
 import { Task } from "../entities/Task";
 import type { NewTask, TaskUpdate } from "../entities/TaskTable";
-import { nanoid } from "nanoid";
 
 export class InMemoryTaskRepository implements TaskRepository {
   constructor(private tasks: Task[]) {}
@@ -40,8 +37,8 @@ export class InMemoryTaskRepository implements TaskRepository {
     return task;
   }
 
-  async findAll(): Promise<Task[]> {
-    return this.tasks;
+  async findAll(accountId: number): Promise<Task[]> {
+    return this.tasks.filter((acc) => acc.accountId === accountId);
   }
   async updateOne(id: number, updateWith: TaskUpdate): Promise<void> {
     const workingTask = await this.findById(id);
