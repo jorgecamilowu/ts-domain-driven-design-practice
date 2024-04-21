@@ -3,6 +3,7 @@ import { Role } from "./Role";
 import config from "config";
 import * as jose from "jose";
 import type { Permission } from "./Permission";
+import { PermissionType } from "../valueObjects/PermissionType";
 
 describe("Role tests", () => {
   it("creates a Role from a JWT", async () => {
@@ -13,7 +14,7 @@ describe("Role tests", () => {
           accountId: 1,
           name: "task",
         },
-        type: "read",
+        type: PermissionType.READ,
       },
     ];
 
@@ -49,7 +50,7 @@ describe("Role tests", () => {
           accountId: 1,
           name: "task",
         },
-        type: "readAndWrite",
+        type: PermissionType.READ_AND_WRITE,
       },
     ]);
 
@@ -58,7 +59,7 @@ describe("Role tests", () => {
         accountId: 1,
         name: "task",
       })
-    ).toBe("readAndWrite");
+    ).toBe(PermissionType.READ_AND_WRITE);
   });
 
   it("denies access to resources not in permissions list", () => {
@@ -69,7 +70,7 @@ describe("Role tests", () => {
           accountId: 1,
           name: "task",
         },
-        type: "readAndWrite",
+        type: PermissionType.READ_AND_WRITE,
       },
     ]);
 
@@ -78,6 +79,6 @@ describe("Role tests", () => {
         accountId: 9,
         name: "task",
       })
-    ).toBe("noAccess");
+    ).toBe(PermissionType.NO_ACCESS);
   });
 });

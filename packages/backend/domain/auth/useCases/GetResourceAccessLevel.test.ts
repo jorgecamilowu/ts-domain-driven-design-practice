@@ -2,6 +2,7 @@ import { describe, it, expect } from "bun:test";
 
 import { GetResourceAccessLevel } from "./GetResourceAccessLevel";
 import { Role } from "../entities/Role";
+import { PermissionType } from "../valueObjects/PermissionType";
 
 describe("Role tests", () => {
   const useCase = new GetResourceAccessLevel();
@@ -14,7 +15,7 @@ describe("Role tests", () => {
           accountId: 1,
           name: "task",
         },
-        type: "readAndWrite",
+        type: PermissionType.READ_AND_WRITE,
       },
     ]);
 
@@ -23,7 +24,7 @@ describe("Role tests", () => {
         accountId: 1,
         name: "task",
       })
-    ).resolves.toBe("readAndWrite");
+    ).resolves.toBe(PermissionType.READ_AND_WRITE);
   });
 
   it("denies access to resources not in permissions list", () => {
@@ -34,7 +35,7 @@ describe("Role tests", () => {
           accountId: 1,
           name: "task",
         },
-        type: "readAndWrite",
+        type: PermissionType.READ_AND_WRITE,
       },
     ]);
 
@@ -43,6 +44,6 @@ describe("Role tests", () => {
         accountId: 9,
         name: "task",
       })
-    ).resolves.toBe("noAccess");
+    ).resolves.toBe(PermissionType.NO_ACCESS);
   });
 });

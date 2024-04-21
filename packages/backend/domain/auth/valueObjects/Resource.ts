@@ -1,4 +1,4 @@
-type ResourceName = "task" | "account";
+type ResourceName = "task";
 type AccountId = number;
 
 export type ResourceString = `${AccountId}.${ResourceName}`;

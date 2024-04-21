@@ -5,13 +5,14 @@ import type {
   Updateable,
 } from "kysely";
 import type { ResourceString } from "../valueObjects/Resource";
+import type { PermissionType } from "../valueObjects/PermissionType";
 
 export interface PermissionTable {
   id: GeneratedAlways<number>;
-  type: string;
+  type: PermissionType;
   resource: ResourceString;
 }
 
-export type AccountResult = Selectable<PermissionTable>;
-export type NewAccount = Insertable<PermissionTable>;
-export type AccountUpdate = Updateable<PermissionTable>;
+export type PermissionResult = Selectable<PermissionTable>;
+export type NewPermission = Insertable<PermissionTable>;
+export type PermissionUpdate = Updateable<PermissionTable>;

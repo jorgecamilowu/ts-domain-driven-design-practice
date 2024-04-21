@@ -2,6 +2,7 @@ import type { Resource } from "../valueObjects/Resource";
 import type { Permission } from "./Permission";
 import * as jose from "jose";
 import config from "config";
+import { PermissionType } from "../valueObjects/PermissionType";
 
 export class Role {
   constructor(
@@ -23,7 +24,7 @@ export class Role {
     return new Role(payload.id, payload.name, payload.permissions);
   }
 
-  getResourceAccessLevel(resource: Resource): Permission["type"] | "noAccess" {
+  getResourceAccessLevel(resource: Resource): PermissionType {
     const access = this.permissions.find(
       (permission) =>
         permission.resource.accountId === resource.accountId &&
@@ -31,7 +32,7 @@ export class Role {
     );
 
     if (!access) {
-      return "noAccess";
+      return PermissionType.NO_ACCESS;
     }
 
     return access.type;
