@@ -3,7 +3,6 @@ import type {
   Insertable,
   Selectable,
   Updateable,
-  Nullable,
 } from "kysely";
 
 export interface AccountTable {
@@ -11,7 +10,7 @@ export interface AccountTable {
   name: string;
   email: string;
   password: string;
-  roleId: Nullable<number>;
+  roleId: number | null;
 }
 
 export type AccountResult = Selectable<AccountTable>;

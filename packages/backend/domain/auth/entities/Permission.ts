@@ -1,8 +1,25 @@
-import type { PermissionType } from "../valueObjects/PermissionType";
+import { PermissionType } from "../valueObjects/PermissionType";
 import type { Resource } from "../valueObjects/Resource";
 
-export interface Permission {
-  readonly id: number;
-  readonly type: PermissionType;
-  readonly resource: Resource;
+export class Permission {
+  constructor(
+    public readonly id: number,
+    public readonly type: PermissionType,
+    public readonly resource: Resource
+  ) {}
+
+  static getDefaultPermissions(accountId: number): {
+    type: PermissionType;
+    resource: Resource;
+  }[] {
+    return [
+      {
+        type: PermissionType.READ_AND_WRITE,
+        resource: {
+          accountId,
+          name: "task",
+        },
+      },
+    ];
+  }
 }

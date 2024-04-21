@@ -9,6 +9,10 @@ export class Resource {
     public readonly name: ResourceName
   ) {}
 
+  toString(): ResourceString {
+    return `${this.accountId}.${this.name}`;
+  }
+
   static fromResourceString(resource: ResourceString): Resource {
     const [accountId, name] = resource.split(".") as [
       `${AccountId}`,
