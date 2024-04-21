@@ -3,6 +3,7 @@ import { Task } from "../entities/Task";
 import type { NewTask, TaskUpdate } from "../entities/TaskTable";
 
 export class InMemoryTaskRepository implements TaskRepository {
+  private counter = 0;
   constructor(private tasks: Task[]) {}
   async create({
     title,
@@ -13,7 +14,7 @@ export class InMemoryTaskRepository implements TaskRepository {
     accountId,
   }: NewTask): Promise<number> {
     const newTask = new Task(
-      123,
+      this.counter,
       title,
       description,
       (dueDate && new Date(dueDate)) || new Date(),
@@ -22,6 +23,8 @@ export class InMemoryTaskRepository implements TaskRepository {
       new Date(),
       accountId || null
     );
+
+    this.counter++;
 
     this.tasks = [...this.tasks, newTask];
 

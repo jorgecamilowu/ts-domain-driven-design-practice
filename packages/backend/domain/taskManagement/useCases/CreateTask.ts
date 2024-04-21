@@ -9,10 +9,11 @@ export class CreateTask {
   ) {}
 
   async execute(task: NewTask, idempotencyKey?: string): Promise<number> {
-    const result =
-      (idempotencyKey !== undefined &&
-        (await this.idempotencyStore.get<number>(idempotencyKey))) ||
-      undefined;
+    let result: number | undefined;
+
+    if (idempotencyKey !== undefined) {
+      result = await this.idempotencyStore.get<number>(idempotencyKey);
+    }
 
     if (result !== undefined) {
       return result;
