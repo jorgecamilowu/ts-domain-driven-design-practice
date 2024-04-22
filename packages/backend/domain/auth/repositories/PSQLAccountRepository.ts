@@ -8,9 +8,14 @@ import type { PermissionType } from "../valueObjects/PermissionType";
 import { Resource, type ResourceString } from "../valueObjects/Resource";
 import { Role } from "../entities/Role";
 import { Permission } from "../entities/Permission";
+import type { PasswordHasher } from "../services/PasswordHasher";
 
 export class PSQLAccountRepository implements AccountRepository {
-  constructor(private db: Kysely<Database>) {}
+  constructor(
+    private db: Kysely<Database>,
+
+    private passwordHasher: PasswordHasher
+  ) {}
 
   private mapToEntity(account: {
     id: number;
@@ -50,6 +55,10 @@ export class PSQLAccountRepository implements AccountRepository {
 
   async create(account: NewAccount): Promise<number> {
     const result = await this.db.transaction().execute(async (trx) => {
+      const hashedPassword = await this.passwordHasher.hashPassword(
+        account.password
+      );
+
       const { id: roleId } = await trx
         .insertInto("role")
         .values({
@@ -60,7 +69,7 @@ export class PSQLAccountRepository implements AccountRepository {
 
       const { id: accountId } = await trx
         .insertInto("account")
-        .values({ ...account, roleId })
+        .values({ ...account, roleId, password: hashedPassword })
         .returningAll()
         .executeTakeFirstOrThrow();
 
