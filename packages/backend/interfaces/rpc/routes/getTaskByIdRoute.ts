@@ -26,14 +26,10 @@ export const getTaskByIdRoute = ({
         return null;
       }
 
-      let accessLevel: PermissionType = PermissionType.NO_ACCESS;
-
-      if (ctx.account.role !== null) {
-        accessLevel = await GetResourceAccessLevel.execute(
-          ctx.account.role,
-          new Resource(task.accountId, "task")
-        );
-      }
+      const accessLevel = await GetResourceAccessLevel.execute(
+        ctx.account.role,
+        new Resource(task.accountId, "task")
+      );
 
       if (
         accessLevel !== PermissionType.READ_AND_WRITE &&

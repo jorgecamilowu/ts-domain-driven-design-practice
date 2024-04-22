@@ -13,14 +13,10 @@ export const getAllTasksRoute = ({
   GetAllTasks: GetAllTasks;
 }) =>
   protectedProcedure.query(async ({ ctx }) => {
-    let accessLevel: PermissionType = PermissionType.NO_ACCESS;
-
-    if (ctx.account.role !== null) {
-      accessLevel = await GetResourceAccessLevel.execute(
-        ctx.account.role,
-        new Resource(ctx.account.id, "task")
-      );
-    }
+    const accessLevel = await GetResourceAccessLevel.execute(
+      ctx.account.role,
+      new Resource(ctx.account.id, "task")
+    );
 
     if (
       accessLevel !== PermissionType.READ_AND_WRITE &&
