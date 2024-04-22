@@ -17,84 +17,75 @@ export class PSQLAccountRepository implements AccountRepository {
     name: string;
     email: string;
     password: string;
-    roleId: number | null;
+    roleId: number;
     role: {
       name: string;
-    } | null;
+    };
     permissions: {
       id: number;
       type: PermissionType;
       resource: ResourceString;
     }[];
   }): Account {
+    const newRole = new Role(
+      account.roleId,
+      account.role.name,
+      account.permissions.map(({ id, resource, type }) => ({
+        id,
+        type,
+        resource: Resource.fromResourceString(resource),
+      }))
+    );
+
     const newAccount = new Account(
       account.id,
       account.name,
       account.email,
       account.password,
-      null
+      newRole
     );
-
-    if (account.roleId !== null && account.role !== null) {
-      newAccount.role = new Role(
-        account.roleId,
-        account.role.name,
-        account.permissions.map(({ id, resource, type }) => ({
-          id,
-          type,
-          resource: Resource.fromResourceString(resource),
-        }))
-      );
-    }
 
     return newAccount;
   }
 
   async create(account: NewAccount): Promise<number> {
     const result = await this.db.transaction().execute(async (trx) => {
+      const { id: roleId } = await trx
+        .insertInto("role")
+        .values({
+          name: "DefaultRole",
+        })
+        .returning("id")
+        .executeTakeFirstOrThrow();
+
       const { id: accountId } = await trx
         .insertInto("account")
-        .values(account)
+        .values({ ...account, roleId })
         .returningAll()
         .executeTakeFirstOrThrow();
 
-      if (account.roleId) {
-        const defaultPermissions = Permission.getDefaultPermissions(accountId);
+      const defaultPermissions = Permission.getDefaultPermissions(accountId);
 
-        const permissionIds = await trx
-          .insertInto("permission")
-          .values(
-            defaultPermissions.map(({ resource, type }) => ({
-              type,
-              resource: resource.toString(),
-            }))
-          )
-          .returning("id")
-          .execute();
+      const permissionIds = await trx
+        .insertInto("permission")
+        .values(
+          defaultPermissions.map(({ resource, type }) => ({
+            type,
+            resource: resource.toString(),
+          }))
+        )
+        .returning("id")
+        .execute();
 
-        const { id: roleId } = await trx
-          .insertInto("role")
-          .values({
-            name: "DefaultRole",
-          })
-          .returning("id")
-          .executeTakeFirstOrThrow();
-
-        await trx
-          .insertInto("rolePermission")
-          .values(
-            permissionIds.map((permission) => ({
-              permissionId: permission.id,
-              roleId,
-            }))
-          )
-          .execute();
-
-        await trx
-          .updateTable("account")
-          .set("account.roleId", roleId)
-          .execute();
-      }
+      await trx
+        .insertInto("rolePermission")
+        .values(
+          permissionIds.map((permission) => ({
+            permissionId: permission.id,
+            roleId,
+          }))
+        )
+        .execute();
 
       return accountId;
     });
@@ -129,6 +120,18 @@ export class PSQLAccountRepository implements AccountRepository {
       return null;
     }
 
-    return this.mapToEntity(account);
+    const { roleId, role } = account;
+
+    if (!roleId || !role) {
+      throw new Error(
+        `Could not find corresponding role for the Account with id: ${id}`
+      );
+    }
+
+    return this.mapToEntity({
+      ...account,
+      roleId,
+      role,
+    });
   }
 }

@@ -15,18 +15,16 @@ export class InMemoryAccountRepository implements AccountRepository {
     private passwordHasher: PasswordHasher
   ) {}
 
-  async create({ email, name, password, roleId }: NewAccount): Promise<number> {
+  async create({ email, name, password }: NewAccount): Promise<number> {
     const hashedPassword = await this.passwordHasher.hashPassword(password);
 
-    const role = roleId
-      ? new Role(roleId, "test-role", [
-          new Permission(
-            this.count,
-            PermissionType.READ_AND_WRITE,
-            new Resource(this.count, "task")
-          ),
-        ])
-      : null;
+    const role = new Role(Math.floor(Math.random() * 10), "test-role", [
+      new Permission(
+        this.count,
+        PermissionType.READ_AND_WRITE,
+        new Resource(this.count, "task")
+      ),
+    ]);
 
     const newAccount = new Account(
       this.count,
