@@ -25,7 +25,7 @@ const trpc = initTRPC.context<Context>().create();
 export const router = trpc.router;
 export const publicProcedure = trpc.procedure;
 export const protectedProcedure = trpc.procedure.use(async ({ ctx, next }) => {
-  if (!ctx.account) {
+  if (!ctx.account || ctx.account.role === null) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: ctx.errorMessage,

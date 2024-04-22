@@ -2,6 +2,8 @@ import type { GetAllTasks } from "../../../domain/taskManagement/useCases/GetAll
 import type { GetResourceAccessLevel } from "../../../domain/auth/useCases/GetResourceAccessLevel";
 import { protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
+import { PermissionType } from "../../../domain/auth/valueObjects/PermissionType";
+import { Resource } from "../../../domain/auth/valueObjects/Resource";
 
 export const getAllTasksRoute = ({
   GetResourceAccessLevel,
@@ -11,13 +13,22 @@ export const getAllTasksRoute = ({
   GetAllTasks: GetAllTasks;
 }) =>
   protectedProcedure.query(async ({ ctx }) => {
-    const accessLevel = await GetResourceAccessLevel.execute(ctx.account.role, {
-      accountId: ctx.account.id,
-      name: "task",
-    });
+    let accessLevel: PermissionType = PermissionType.NO_ACCESS;
 
-    if (accessLevel !== "read" && accessLevel !== "readAndWrite") {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
+    if (ctx.account.role !== null) {
+      accessLevel = await GetResourceAccessLevel.execute(
+        ctx.account.role,
+        new Resource(ctx.account.id, "task")
+      );
+    }
+
+    if (
+      accessLevel !== PermissionType.READ_AND_WRITE &&
+      accessLevel !== PermissionType.READ
+    ) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+      });
     }
 
     return GetAllTasks.execute(ctx.account.id);

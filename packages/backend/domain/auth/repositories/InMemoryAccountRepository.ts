@@ -1,7 +1,10 @@
 import { Account } from "../entities/Account";
 import type { NewAccount } from "../entities/AccountTable";
+import { Permission } from "../entities/Permission";
 import { Role } from "../entities/Role";
 import type { PasswordHasher } from "../services/PasswordHasher";
+import { PermissionType } from "../valueObjects/PermissionType";
+import { Resource } from "../valueObjects/Resource";
 import type { AccountRepository } from "./AccountRepository";
 
 export class InMemoryAccountRepository implements AccountRepository {
@@ -15,12 +18,22 @@ export class InMemoryAccountRepository implements AccountRepository {
   async create({ email, name, password, roleId }: NewAccount): Promise<number> {
     const hashedPassword = await this.passwordHasher.hashPassword(password);
 
+    const role = roleId
+      ? new Role(roleId, "test-role", [
+          new Permission(
+            this.count,
+            PermissionType.READ_AND_WRITE,
+            new Resource(this.count, "task")
+          ),
+        ])
+      : null;
+
     const newAccount = new Account(
       this.count,
       name,
       email,
       hashedPassword,
-      new Role(roleId, "test-role", [])
+      role
     );
 
     this.count++;

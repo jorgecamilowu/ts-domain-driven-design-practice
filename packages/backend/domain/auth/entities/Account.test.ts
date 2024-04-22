@@ -2,20 +2,15 @@ import { describe, it, expect } from "bun:test";
 import { Role } from "./Role";
 import config from "config";
 import * as jose from "jose";
-import type { Permission } from "./Permission";
+import { Permission } from "./Permission";
 import { Account } from "./Account";
+import { PermissionType } from "../valueObjects/PermissionType";
+import { Resource } from "../valueObjects/Resource";
 
 describe("Account tests", () => {
   it("reads account information from a JWT", async () => {
     const permissions: Permission[] = [
-      {
-        id: 1,
-        resource: {
-          accountId: 1,
-          name: "task",
-        },
-        type: "read",
-      },
+      new Permission(1, PermissionType.READ, new Resource(1, "task")),
     ];
 
     const jwk = config.get<jose.JWK>("auth.jwk");

@@ -1,5 +1,5 @@
 import { PermissionType } from "../valueObjects/PermissionType";
-import type { Resource } from "../valueObjects/Resource";
+import { Resource } from "../valueObjects/Resource";
 
 export class Permission {
   constructor(
@@ -15,10 +15,7 @@ export class Permission {
     return [
       {
         type: PermissionType.READ_AND_WRITE,
-        resource: {
-          accountId,
-          name: "task",
-        },
+        resource: new Resource(accountId, "task"),
       },
     ];
   }

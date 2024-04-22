@@ -16,18 +16,26 @@ import { GetResourceAccessLevel } from "../../domain/auth/useCases/GetResourceAc
 
 const taskRepository = new PSQLTaskRepository(db);
 const inMemoryIdempotencyStore = new InMemoryIdempotencyStore({});
+const GetResourceAccessLevelUseCase = new GetResourceAccessLevel();
 
 export const appRouter = router({
-  createTask: createTaskRoute(
-    new CreateTask(taskRepository, inMemoryIdempotencyStore)
-  ),
-  getAllTasks: getAllTasksRoute(new GetAllTasks(taskRepository)),
+  createTask: createTaskRoute({
+    CreateTask: new CreateTask(taskRepository, inMemoryIdempotencyStore),
+    GetResourceAccessLevel: GetResourceAccessLevelUseCase,
+  }),
+  getAllTasks: getAllTasksRoute({
+    GetResourceAccessLevel: GetResourceAccessLevelUseCase,
+    GetAllTasks: new GetAllTasks(taskRepository),
+  }),
   getTaskById: getTaskByIdRoute({
-    GetResourceAccessLevel: new GetResourceAccessLevel(),
+    GetResourceAccessLevel: GetResourceAccessLevelUseCase,
     GetTaskById: new GetTaskById(taskRepository),
   }),
   updateTask: updateTaskRoute(new UpdateTask(taskRepository)),
-  deleteTask: deleteTaskRoute(new DeleteTask(taskRepository)),
+  deleteTask: deleteTaskRoute({
+    GetResourceAccessLevel: GetResourceAccessLevelUseCase,
+    DeleteTask: new DeleteTask(taskRepository),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
