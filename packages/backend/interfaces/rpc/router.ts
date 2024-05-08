@@ -13,12 +13,26 @@ import { getTaskByIdRoute } from "./routes/getTaskByIdRoute";
 import { updateTaskRoute } from "./routes/updateTaskRoute";
 import { deleteTaskRoute } from "./routes/deleteTaskRoute";
 import { GetResourceAccessLevel } from "../../domain/auth/useCases/GetResourceAccessLevel";
+import { createAccountRoute } from "./routes/createAccountRoute";
+import { CreateAccount } from "../../domain/auth/useCases/CreateAccount";
+import { PSQLAccountRepository } from "../../domain/auth/repositories/PSQLAccountRepository";
+import { BunPasswordHasher } from "../../domain/auth/services/BunPasswordHasher";
 
+const accountRepository = new PSQLAccountRepository(
+  db,
+  new BunPasswordHasher()
+);
 const taskRepository = new PSQLTaskRepository(db);
 const inMemoryIdempotencyStore = new InMemoryIdempotencyStore({});
 const GetResourceAccessLevelUseCase = new GetResourceAccessLevel();
 
 export const appRouter = router({
+  createAccount: createAccountRoute({
+    CreateAccount: new CreateAccount(
+      accountRepository,
+      inMemoryIdempotencyStore
+    ),
+  }),
   createTask: createTaskRoute({
     CreateTask: new CreateTask(taskRepository, inMemoryIdempotencyStore),
     GetResourceAccessLevel: GetResourceAccessLevelUseCase,
